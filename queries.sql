@@ -18,28 +18,28 @@
 
 /*  Vet clinic database: query and update animals table */
 
--- BEGIN;
--- UPDATE animals SET species = 'unspecified';
--- ROLLBACK;
+BEGIN;
+UPDATE animals SET species = 'unspecified';
+ROLLBACK;
 
--- BEGIN;
--- UPDATE animals SET species = 'digimon'
--- WHERE name LIKE '%mon';
--- UPDATE animals SET species = 'pokemon'
--- WHERE species IS NULL;
--- COMMIT;
+BEGIN;
+UPDATE animals SET species = 'digimon'
+WHERE name LIKE '%mon';
+UPDATE animals SET species = 'pokemon'
+WHERE species IS NULL;
+COMMIT;
 
--- BEGIN;
--- DELETE FROM animals;
--- ROLLBACK;
+BEGIN;
+DELETE FROM animals;
+ROLLBACK;
 
--- BEGIN;
--- DELETE FROM animals WHERE date_of_birth > 'Jan 1, 2022';
--- SAVEPOINT delborn;
--- UPDATE animals SET weight_kg = weight_kg * -1;
--- ROLLBACK TO delborn;
--- UPDATE animals SET weight_kg = weight_kg * -1 WHERE weight_kg < 0;
--- COMMIT;
+BEGIN;
+DELETE FROM animals WHERE date_of_birth > 'Jan 1, 2022';
+SAVEPOINT delborn;
+UPDATE animals SET weight_kg = weight_kg * -1;
+ROLLBACK TO delborn;
+UPDATE animals SET weight_kg = weight_kg * -1 WHERE weight_kg < 0;
+COMMIT;
 
 SELECT COUNT(*) FROM animals; 
 SELECT COUNT(escape_attempts) FROM animals WHERE escape_attempts > 0; 
