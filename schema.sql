@@ -12,4 +12,27 @@
 
 /*  Vet clinic database: query and update animals table */
 
-ALTER TABLE animals ADD species varchar(200);
+-- ALTER TABLE animals ADD species varchar(200);
+
+/* Vet clinic database: query multiple tables
+*/
+
+CREATE TABLE owners(
+    id SERIAL,
+    full_name varchar(100),
+    age integer,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE species(
+    id SERIAL,
+    name varchar(100),
+    PRIMARY KEY (id)
+);
+ALTER TABLE animals DROP COLUMN id;
+ALTER TABLE animals ADD COLUMN id SERIAL PRIMARY KEY;
+
+ALTER TABLE animals DROP COLUMN species;
+ALTER TABLE animals ADD COLUMN species_id int REFERENCES species(id);
+
+ALTER TABLE animals ADD COLUMN owner_id int REFERENCES owners(id);
