@@ -48,25 +48,70 @@
 -- SELECT species, MAX(weight_kg), MIN(weight_kg) FROM animals GROUP BY species;
 -- SELECT species, ROUND(AVG(escape_attempts), 2) FROM animals WHERE date_of_birth BETWEEN '01-01-1990' AND '01-01-2000' GROUP BY species;
 
-SELECT name AS OWNS FROM animals INNER JOIN owners ON animals.owner_id = owners.id WHERE owners.full_name = 'Melody Pond';
+-- SELECT name AS OWNS FROM animals INNER JOIN owners ON animals.owner_id = owners.id WHERE owners.full_name = 'Melody Pond';
 
-SELECT animals.name AS POKEMONS FROM animals INNER JOIN species ON animals.species_id = species.id WHERE species.name = 'Pokemon';
+-- SELECT animals.name AS POKEMONS FROM animals INNER JOIN species ON animals.species_id = species.id WHERE species.name = 'Pokemon';
 
-SELECT full_name, name FROM animals RIGHT JOIN owners ON animals.owner_id = owners.id;
+-- SELECT full_name, name FROM animals RIGHT JOIN owners ON animals.owner_id = owners.id;
 
-SELECT species.name, COUNT(species_id) FROM animals INNER JOIN species ON animals.species_id = species.id GROUP BY species.name;
+-- SELECT species.name, COUNT(species_id) FROM animals INNER JOIN species ON animals.species_id = species.id GROUP BY species.name;
 
-SELECT animals.name FROM animals JOIN owners ON animals.owner_id = owners.id JOIN species ON animals.species_id = species.id WHERE owners.full_name = 'Jennifer Orwell' AND species.name = 'Digimon' ;
+-- SELECT animals.name FROM animals JOIN owners ON animals.owner_id = owners.id JOIN species ON animals.species_id = species.id WHERE owners.full_name = 'Jennifer Orwell' AND species.name = 'Digimon' ;
 
-SELECT animals.name FROM animals INNER JOIN owners ON animals.owner_id = owners.id  
-WHERE animals.escape_attempts = 0 AND owners.full_name = 'Dean Winchester';
+-- SELECT animals.name FROM animals INNER JOIN owners ON animals.owner_id = owners.id  
+-- WHERE animals.escape_attempts = 0 AND owners.full_name = 'Dean Winchester';
 
-SELECT full_name, COUNT(full_name) FROM animals INNER JOIN owners ON animals.owner_id = owners.id  
-GROUP BY full_name;
+-- SELECT full_name, COUNT(full_name) FROM animals INNER JOIN owners ON animals.owner_id = owners.id  
+-- GROUP BY full_name;
 
-SELECT full_name
-FROM animals
-INNER JOIN owners ON animals.owner_id = owners.id
-GROUP BY owners.full_name
-ORDER BY COUNT(full_name) DESC
+-- SELECT full_name
+-- FROM animals
+-- INNER JOIN owners ON animals.owner_id = owners.id
+-- GROUP BY owners.full_name
+-- ORDER BY COUNT(full_name) DESC
+-- LIMIT 1;
+
+/*Vet clinic database: add "join table" for visits */
+
+SELECT animals.name FROM animals
+JOIN visits ON animals.id = visits.animal_id
+JOIN vets ON vets.id = visits.vets_id
+WHERE vets.name = 'William Tatcher'
+ORDER BY visits.visit_date DESC
 LIMIT 1;
+
+SELECT animals.name FROM animals 
+JOIN visits ON animal_id = animals.id
+JOIN vets ON vets.id = vets_id
+WHERE vets.name = 'Stephanie Mendez'
+GROUP BY animals.name;
+
+SELECT vets.name, species.name FROM vets 
+LEFT JOIN specializations ON specializations.vets_id = vets.id 
+LEFT JOIN species ON species.id = species_id;
+
+SELECT animals.name  FROM animals 
+JOIN visits ON animal_id = animals.id
+JOIN vets ON vets.id = visits.vets_id
+WHERE vets.name = 'Stephanie Mendez' 
+AND visits.visit_date BETWEEN 'April 1, 2020' 
+AND 'August 30, 2020';
+
+SELECT animals.name FROM animals
+JOIN visits ON animals.id = visits.animal_id
+JOIN vets ON vets.id = visits.vets_id
+WHERE vets.name = 'Maisy Smith'
+ORDER BY visits.visit_date ASC
+LIMIT 1;
+
+SELECT animals.name, animals.date_of_birth, animals.escape_attempts, animals.neutered, animals.weight_kg,
+vets.name AS vet_name, vets.age AS vet_age, vets.date_of_graduation,
+visit_date FROM animals
+JOIN visits ON animals.id = visits.animal_id
+JOIN vets ON vets.id = visits.vets_id
+ORDER BY visits.visit_date DESC
+LIMIT 1;
+
+SELECT animals.name, species.name FROM animals 
+JOIN specializations ON specializations.vets_id = vets.id 
+JOIN species ON species.id = species_id;
