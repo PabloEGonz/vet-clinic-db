@@ -17,22 +17,51 @@
 /* Vet clinic database: query multiple tables
 */
 
-CREATE TABLE owners(
-    id SERIAL,
-    full_name varchar(100),
-    age integer,
-    PRIMARY KEY (id)
-);
+-- CREATE TABLE owners(
+--     id SERIAL,
+--     full_name varchar(100),
+--     age integer,
+--     PRIMARY KEY (id)
+-- );
 
-CREATE TABLE species(
-    id SERIAL,
+-- CREATE TABLE species(
+--     id SERIAL,
+--     name varchar(100),
+--     PRIMARY KEY (id)
+-- );
+-- ALTER TABLE animals DROP COLUMN id;
+-- ALTER TABLE animals ADD COLUMN id SERIAL PRIMARY KEY;
+
+-- ALTER TABLE animals DROP COLUMN species;
+-- ALTER TABLE animals ADD COLUMN species_id int REFERENCES species(id);
+
+-- ALTER TABLE animals ADD COLUMN owner_id int REFERENCES owners(id);
+
+/*Vet clinic database: add "join table" for visits */
+
+CREATE TABLE vets (
+    id SERIAL PRIMARY KEY,
     name varchar(100),
-    PRIMARY KEY (id)
+    age integer,
+    date_of_graduation DATE
 );
-ALTER TABLE animals DROP COLUMN id;
-ALTER TABLE animals ADD COLUMN id SERIAL PRIMARY KEY;
 
-ALTER TABLE animals DROP COLUMN species;
-ALTER TABLE animals ADD COLUMN species_id int REFERENCES species(id);
+CREATE TABLE specializations (
+    species_id integer,
+    vets_id integer,
+    PRIMARY KEY (species_id, vets_id),
+    FOREIGN KEY (species_id) REFERENCES species(id),
+    FOREIGN KEY (vets_id) REFERENCES vets(id)
+);
 
-ALTER TABLE animals ADD COLUMN owner_id int REFERENCES owners(id);
+
+CREATE TABLE visits (
+    animal_id integer,
+    vets_id integer,
+    visit_date DATE,
+    PRIMARY KEY (animal_id, vets_id),
+    FOREIGN KEY (animal_id) REFERENCES animals(id),
+    FOREIGN KEY (vets_id) REFERENCES vets(id)
+);
+
+ALTER TABLE visits DROP COLUMN PRIMARY KEY;
