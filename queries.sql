@@ -112,6 +112,17 @@ JOIN vets ON vets.id = visits.vets_id
 ORDER BY visits.visit_date DESC
 LIMIT 1;
 
-SELECT animals.name, species.name FROM animals 
-JOIN specializations ON specializations.vets_id = vets.id 
-JOIN species ON species.id = species_id;
+SELECT COUNT(vets.name) FROM vets
+JOIN visits ON visits.vets_id = vets.id
+LEFT JOIN specializations ON specializations.vets_id = vets.id
+LEFT JOIN species ON species.id = specializations.species_id
+WHERE species.name IS NULL;
+
+SELECT species.name FROM animals
+JOIN visits ON visits.animal_id = animals.id
+JOIN vets ON vets.id = visits.vets_id
+JOIN species ON species.id = animals.species_id
+WHERE vets.name = 'Maisy Smith'
+GROUP BY species.name
+ORDER BY COUNT(species.name) DESC
+LIMIT 1;
