@@ -80,11 +80,10 @@ WHERE vets.name = 'William Tatcher'
 ORDER BY visits.visit_date DESC
 LIMIT 1;
 
-SELECT animals.name FROM animals 
+SELECT COUNT(animals.name) FROM animals 
 JOIN visits ON animal_id = animals.id
 JOIN vets ON vets.id = vets_id
-WHERE vets.name = 'Stephanie Mendez'
-GROUP BY animals.name;
+WHERE vets.name = 'Stephanie Mendez';
 
 SELECT vets.name, species.name FROM vets 
 LEFT JOIN specializations ON specializations.vets_id = vets.id 
@@ -96,6 +95,14 @@ JOIN vets ON vets.id = visits.vets_id
 WHERE vets.name = 'Stephanie Mendez' 
 AND visits.visit_date BETWEEN 'April 1, 2020' 
 AND 'August 30, 2020';
+
+SELECT animals.name FROM animals
+JOIN visits ON animals.id = visits.animal_id
+JOIN vets ON vets.id = visits.vets_id
+GROUP BY animals.name 
+ORDER BY COUNT(animals.name) DESC
+LIMIT 1;
+
 
 SELECT animals.name FROM animals
 JOIN visits ON animals.id = visits.animal_id
