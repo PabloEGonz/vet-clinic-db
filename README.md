@@ -21,6 +21,7 @@
 - [🔭 Future Features](#future-features)
 - [🤝 Contributing](#contributing)
 - [⭐️ Show your support](#support)
+- [🙏 Acknowledgements](#acknowledgements)
 - [📝 License](#license)
 
 # 📖 [Vet Clinic Database] <a name="about-project"></a>
@@ -143,6 +144,12 @@ Feel free to check the [issues page](../../issues/).
 ## ⭐️ Show your support <a name="support"></a>
 
 If you like this project, please give it a start.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## 🙏 Acknowledgments <a name="acknowledgements"></a>
+
+This project is an assigment from Microverse.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
