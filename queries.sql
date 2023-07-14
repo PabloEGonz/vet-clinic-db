@@ -1,52 +1,52 @@
 /*Queries that provide answers to the questions from all projects.*/
 
--- SELECT * from animals WHERE name LIKE '%mon';
+SELECT * from animals WHERE name LIKE '%mon';
 
--- SELECT name from animals WHERE date_of_birth BETWEEN '01-01-2016' AND '01-01-2019';
+SELECT name from animals WHERE date_of_birth BETWEEN '01-01-2016' AND '01-01-2019';
 
--- SELECT name from animals WHERE (neutered = 't') AND ( escape_attempts < 3);
+SELECT name from animals WHERE (neutered = 't') AND ( escape_attempts < 3);
 
--- SELECT date_of_birth from animals WHERE name IN ('Agumon', 'Pikachu');
+SELECT date_of_birth from animals WHERE name IN ('Agumon', 'Pikachu');
 
--- SELECT name, escape_attempts from animals WHERE weight_kg > 10.5;
+SELECT name, escape_attempts from animals WHERE weight_kg > 10.5;
 
--- SELECT * from animals WHERE neutered = 't';
+SELECT * from animals WHERE neutered = 't';
 
--- SELECT * from animals WHERE NOT name = 'Gabumon';
+SELECT * from animals WHERE NOT name = 'Gabumon';
 
--- SELECT * from animals WHERE weight_kg >= 10.4 AND weight_kg <= 17.3;
+SELECT * from animals WHERE weight_kg >= 10.4 AND weight_kg <= 17.3;
 
 /*  Vet clinic database: query and update animals table */
 
--- BEGIN;
--- UPDATE animals SET species = 'unspecified';
--- ROLLBACK;
+BEGIN;
+UPDATE animals SET species = 'unspecified';
+ROLLBACK;
 
--- BEGIN;
--- UPDATE animals SET species = 'digimon'
--- WHERE name LIKE '%mon';
--- UPDATE animals SET species = 'pokemon'
--- WHERE species IS NULL;
--- COMMIT;
+BEGIN;
+UPDATE animals SET species = 'digimon'
+WHERE name LIKE '%mon';
+UPDATE animals SET species = 'pokemon'
+WHERE species IS NULL;
+COMMIT;
 
--- BEGIN;
--- DELETE FROM animals;
--- ROLLBACK;
+BEGIN;
+DELETE FROM animals;
+ROLLBACK;
 
--- BEGIN;
--- DELETE FROM animals WHERE date_of_birth > 'Jan 1, 2022';
--- SAVEPOINT delborn;
--- UPDATE animals SET weight_kg = weight_kg * -1;
--- ROLLBACK TO delborn;
--- UPDATE animals SET weight_kg = weight_kg * -1 WHERE weight_kg < 0;
--- COMMIT;
+BEGIN;
+DELETE FROM animals WHERE date_of_birth > 'Jan 1, 2022';
+SAVEPOINT delborn;
+UPDATE animals SET weight_kg = weight_kg * -1;
+ROLLBACK TO delborn;
+UPDATE animals SET weight_kg = weight_kg * -1 WHERE weight_kg < 0;
+COMMIT;
 
--- SELECT COUNT(*) FROM animals; 
--- SELECT COUNT(escape_attempts) FROM animals WHERE escape_attempts = 0; 
--- SELECT ROUND(AVG(weight_kg), 2) FROM animals;
--- SELECT neutered, ROUND(AVG(escape_attempts), 2) FROM animals GROUP BY neutered;
--- SELECT species, MAX(weight_kg), MIN(weight_kg) FROM animals GROUP BY species;
--- SELECT species, ROUND(AVG(escape_attempts), 2) FROM animals WHERE date_of_birth BETWEEN '01-01-1990' AND '01-01-2000' GROUP BY species;
+SELECT COUNT(*) FROM animals; 
+SELECT COUNT(escape_attempts) FROM animals WHERE escape_attempts = 0; 
+SELECT ROUND(AVG(weight_kg), 2) FROM animals;
+SELECT neutered, ROUND(AVG(escape_attempts), 2) FROM animals GROUP BY neutered;
+SELECT species, MAX(weight_kg), MIN(weight_kg) FROM animals GROUP BY species;
+SELECT species, ROUND(AVG(escape_attempts), 2) FROM animals WHERE date_of_birth BETWEEN '01-01-1990' AND '01-01-2000' GROUP BY species;
 
 SELECT name AS OWNS FROM animals INNER JOIN owners ON animals.owner_id = owners.id WHERE owners.full_name = 'Melody Pond';
 
@@ -69,4 +69,67 @@ FROM animals
 INNER JOIN owners ON animals.owner_id = owners.id
 GROUP BY owners.full_name
 ORDER BY COUNT(full_name) DESC
+LIMIT 1;
+
+/*Vet clinic database: add "join table" for visits */
+
+SELECT animals.name FROM animals
+JOIN visits ON animals.id = visits.animal_id
+JOIN vets ON vets.id = visits.vets_id
+WHERE vets.name = 'William Tatcher'
+ORDER BY visits.visit_date DESC
+LIMIT 1;
+
+SELECT COUNT(animals.name) FROM animals 
+JOIN visits ON animal_id = animals.id
+JOIN vets ON vets.id = vets_id
+WHERE vets.name = 'Stephanie Mendez';
+
+SELECT vets.name, species.name FROM vets 
+LEFT JOIN specializations ON specializations.vets_id = vets.id 
+LEFT JOIN species ON species.id = species_id;
+
+SELECT animals.name  FROM animals 
+JOIN visits ON animal_id = animals.id
+JOIN vets ON vets.id = visits.vets_id
+WHERE vets.name = 'Stephanie Mendez' 
+AND visits.visit_date BETWEEN 'April 1, 2020' 
+AND 'August 30, 2020';
+
+SELECT animals.name FROM animals
+JOIN visits ON animals.id = visits.animal_id
+JOIN vets ON vets.id = visits.vets_id
+GROUP BY animals.name 
+ORDER BY COUNT(animals.name) DESC
+LIMIT 1;
+
+
+SELECT animals.name FROM animals
+JOIN visits ON animals.id = visits.animal_id
+JOIN vets ON vets.id = visits.vets_id
+WHERE vets.name = 'Maisy Smith'
+ORDER BY visits.visit_date ASC
+LIMIT 1;
+
+SELECT animals.name, animals.date_of_birth, animals.escape_attempts, animals.neutered, animals.weight_kg,
+vets.name AS vet_name, vets.age AS vet_age, vets.date_of_graduation,
+visit_date FROM animals
+JOIN visits ON animals.id = visits.animal_id
+JOIN vets ON vets.id = visits.vets_id
+ORDER BY visits.visit_date DESC
+LIMIT 1;
+
+SELECT COUNT(vets.name) FROM vets
+JOIN visits ON visits.vets_id = vets.id
+LEFT JOIN specializations ON specializations.vets_id = vets.id
+LEFT JOIN species ON species.id = specializations.species_id
+WHERE species.name IS NULL;
+
+SELECT species.name FROM animals
+JOIN visits ON visits.animal_id = animals.id
+JOIN vets ON vets.id = visits.vets_id
+JOIN species ON species.id = animals.species_id
+WHERE vets.name = 'Maisy Smith'
+GROUP BY species.name
+ORDER BY COUNT(species.name) DESC
 LIMIT 1;
