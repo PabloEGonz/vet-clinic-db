@@ -78,7 +78,7 @@ CREATE INDEX visit_animal_id_idx  ON visits (animal_id DESC);
 
 /* add indexing for vets id querying*/
 
-CREATE INDEX visits_vets_id ON visits(vets_id);
+CREATE INDEX visits_vets_id_idx ON visits(vets_id);
 
 /* add indexing for owners email querying*/
 
