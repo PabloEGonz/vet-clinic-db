@@ -72,3 +72,10 @@ CREATE TABLE visits(
 );
 
 -- Vet clinic database: database performance audit
+/* add indexing for animals id querying*/
+
+CREATE INDEX visit_animal_id_idx  ON visits (animal_id DESC);
+
+/* add indexing for vets id querying*/
+
+CREATE INDEX visits_vets_id ON visits(vets_id);
