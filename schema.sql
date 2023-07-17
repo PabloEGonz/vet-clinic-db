@@ -55,10 +55,20 @@ CREATE TABLE specializations (
 );
 
 
-CREATE TABLE visits (
-    animal_id integer,
-    vets_id integer,
-    visit_date DATE,
-    FOREIGN KEY (animal_id) REFERENCES animals(id),
-    FOREIGN KEY (vets_id) REFERENCES vets(id)
+-- CREATE TABLE visits (
+--     animal_id integer,
+--     vets_id integer,
+--     visit_date DATE,
+--     FOREIGN KEY (animal_id) REFERENCES animals(id),
+--     FOREIGN KEY (vets_id) REFERENCES vets(id)
+-- );
+
+CREATE TABLE visits(
+  id INT GENERATED ALWAYS AS IDENTITY,
+  animal_id INT REFERENCES animals(id),
+  vets_id INT REFERENCES vets(id),
+  visit_date DATE,
+  PRIMARY KEY(id)
 );
+
+-- Vet clinic database: database performance audit

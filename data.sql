@@ -69,3 +69,6 @@ VALUES(1, 1, 'May 24, 2020'),
 (4, 2, 'Aug 3, 2020'),
 (6, 3, 'May 24, 2020'),
 (6, 1, 'Jan 11, 2021');
+
+-- Vet clinic database: database performance audit
+
