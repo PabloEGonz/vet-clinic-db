@@ -55,10 +55,31 @@ CREATE TABLE specializations (
 );
 
 
-CREATE TABLE visits (
-    animal_id integer,
-    vets_id integer,
-    visit_date DATE,
-    FOREIGN KEY (animal_id) REFERENCES animals(id),
-    FOREIGN KEY (vets_id) REFERENCES vets(id)
+-- CREATE TABLE visits (
+--     animal_id integer,
+--     vets_id integer,
+--     visit_date DATE,
+--     FOREIGN KEY (animal_id) REFERENCES animals(id),
+--     FOREIGN KEY (vets_id) REFERENCES vets(id)
+-- );
+
+CREATE TABLE visits(
+  id INT GENERATED ALWAYS AS IDENTITY,
+  animal_id INT REFERENCES animals(id),
+  vets_id INT REFERENCES vets(id),
+  visit_date DATE,
+  PRIMARY KEY(id)
 );
+
+-- Vet clinic database: database performance audit
+/* add indexing for animals id querying*/
+
+CREATE INDEX visit_animal_id_idx  ON visits (animal_id DESC);
+
+/* add indexing for vets id querying*/
+
+CREATE INDEX visits_vets_id_idx ON visits(vets_id);
+
+/* add indexing for owners email querying*/
+
+CREATE INDEX owners_email_idx ON owners(email);
